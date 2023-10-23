@@ -59,4 +59,43 @@ export const GlobalStyle = createGlobalStyle`
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  .react-modal-overlay {
+        background: rgba(0, 0, 0, 0.5);
+        position: fixed;//ocupa a tela toda
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+  }
+
+    .react-modal-content {
+      width: 100%;//ocupar 100% do espaço em caso de tela menor que o max-width
+      max-width: 576px;//o tamanho máximo que ele pode chegar
+      background: var(--background);
+      padding: 3rem;
+      position: relative;
+      border-radius: 0.25rem;
+
+    }
+
+    .react-modal-close {
+      //é preciso deixar o display flex para surtir efeito
+      position: absolute;//ele flutua e os outros componentes não precisam se ajustar para acomodar ele
+      right: 1.5rem;
+      top: 1.5rem;
+      border: 0;
+      background: transparent;//tirandoa cor de fundo
+
+      transition: filter(0.2s);
+
+      &:hover {
+        filter: brightness(0.8);
+      }
+    }
+
 `;
