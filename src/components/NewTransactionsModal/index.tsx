@@ -38,7 +38,7 @@ export function NewTransactionModal({ isOpen,  onRequestClose}: NewTransactionMo
             <Container onSubmit={handleCreateNewTransaction}>
                 <h2> Cadastrar transação </h2>
                 <input onChange={event => setName(event.target.value)} value={name}  placeholder="Nome" />  
-                <input onChange={event => setValue(event.target.valueAsNumber)} value={value} placeholder="Valor" type="number"/> 
+                <input onChange={event => setValue(event.target.valueAsNumber)} value={ isNaN(value) ? value : 0 } placeholder="Valor" type="number"/> 
 
                 <TransactionTypeContainer>
                     <RadioBox type="button" 

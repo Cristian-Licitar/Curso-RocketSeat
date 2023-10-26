@@ -18,6 +18,7 @@ createServer({
           name: 'Free lancer',
           type: 'deposit',
           value: 600,
+          category: 'DEV',
           createdAt: new Date('2021-02-12 09:00:00')
         },
         {
@@ -25,6 +26,7 @@ createServer({
           name: 'aluguel',
           type: 'withdraw',
           value: 500,
+          category: 'Casa',
           createdAt: new Date('2021-02-14 11:00:00')
         }
       ]
