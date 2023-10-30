@@ -3,8 +3,8 @@ import { Container, TransactionTypeContainer, RadioBox } from "./styles";
 import closeImg from "../../assets/fechar.svg";
 import incomeImg from "../../assets/entradas.svg";
 import outcomeImg from "../../assets/saídas.svg";
-import {FormEvent, useState} from "react";
-import { api } from "../../services/api";
+import {FormEvent, useContext, useState} from "react";
+import { TransactionsContext } from "../../TransactionsContext";
 
 interface NewTransactionModalProps{
     isOpen: boolean;
@@ -18,11 +18,16 @@ export function NewTransactionModal({ isOpen,  onRequestClose}: NewTransactionMo
     const [value, setValue] = useState(0);
     const [category, setCategory] = useState('');
 
+    const { createTransaction } = useContext(TransactionsContext);
+    
     function handleCreateNewTransaction(event: FormEvent){
         event.preventDefault();//faz com que a página não seja recarregada ao submeter o formulário
-        const data = {name, value, category, type};
-
-        api.post('/transactions', data);
+        createTransaction({
+            name,
+            value,
+            category,
+            type,
+        })
     }
   
     return (
@@ -38,7 +43,7 @@ export function NewTransactionModal({ isOpen,  onRequestClose}: NewTransactionMo
             <Container onSubmit={handleCreateNewTransaction}>
                 <h2> Cadastrar transação </h2>
                 <input onChange={event => setName(event.target.value)} value={name}  placeholder="Nome" />  
-                <input onChange={event => setValue(event.target.valueAsNumber)} value={ isNaN(value) ? value : 0 } placeholder="Valor" type="number"/> 
+                <input onChange={event => setValue(event.target.valueAsNumber)} value={ isNaN(value) ? '' : value } placeholder="Valor" type="number"/> 
 
                 <TransactionTypeContainer>
                     <RadioBox type="button" 
