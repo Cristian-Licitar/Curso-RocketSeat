@@ -62,8 +62,8 @@ export const TransactionTypeContainer = styled.div`
 
 //criando propriedade para os botões.
 interface RadioBoxProps{
-    isActive: boolean;
-    activeColor: 'green' | 'red';//defino que o activeColor só pode ser green ou red, retirando o erro do background no RadioBox abaixo
+    isactive: boolean;
+    activecolor: 'green' | 'red';//defino que o activeColor só pode ser green ou red, retirando o erro do background no RadioBox abaixo
 }
 
 const colors = {
@@ -75,7 +75,7 @@ export const RadioBox = styled.button<RadioBoxProps>`
         height: 4rem;
         border: 1px solid #d7d7d7;
         border-radius: 0.25rem;
-        background: ${(props) => props.isActive ? transparentize(0.9, colors[props.activeColor]) : 'transparent'};
+        background: ${(props) => props.isactive ? transparentize(0.9, colors[props.activecolor]) : 'transparent'};
 
         display: flex;
         align-items: center;//alinhamento vertical do itens centralizado

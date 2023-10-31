@@ -1,5 +1,5 @@
-import { ReactNode, createContext, useEffect, useState } from "react";
-import { api } from "./services/api";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { api } from "../services/api";
 
 interface Transaction {
     id: number,
@@ -16,7 +16,7 @@ interface TransactionsProviderProps {
 
 interface TransactionContextData{
     transactions: Transaction[];
-    createTransaction: (transaction: TransactionInput) => void;
+    createTransaction: (transaction: TransactionInput) => Promise<void>;
 }
 
 //Passo primeiro o objeto ou propriedade, depois as variáveis dele que quero omitir
@@ -25,7 +25,7 @@ type TransactionInput = Omit<Transaction, 'id' | 'createdAt'>;
 //Nesse é o contrário, passo os valores que quero manter
 //type TransactionInput = Pick<Transaction, 'name' | 'value' | 'type' | 'category'>;
 
-export const TransactionsContext = createContext<TransactionContextData>( {} as TransactionContextData);
+const TransactionsContext = createContext<TransactionContextData>( {} as TransactionContextData);
 
 export function TransactionsProvider({ children }: TransactionsProviderProps ){
 
@@ -40,9 +40,11 @@ export function TransactionsProvider({ children }: TransactionsProviderProps ){
         //usando só response.data, iria mostrar as outras configurações da requisição
     }, []);
 
-    function createTransaction(transaction: TransactionInput){
-        api.post('/transactions', transaction);
-        
+    async function createTransaction(transactionInput: TransactionInput){
+        const response = await api.post('/transactions', {...transactionInput, createdAt: new Date('pt-BR')});
+        const { transaction } = response.data;
+
+        setTransactions([...transactions, transaction]);
     }
 
     return (
@@ -50,4 +52,10 @@ export function TransactionsProvider({ children }: TransactionsProviderProps ){
             {children}
         </TransactionsContext.Provider>
     )
+}
+
+export function useTransactions(){
+    const context = useContext(TransactionsContext);
+    
+    return context;
 }

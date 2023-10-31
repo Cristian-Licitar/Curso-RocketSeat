@@ -3,8 +3,9 @@ import { Container, TransactionTypeContainer, RadioBox } from "./styles";
 import closeImg from "../../assets/fechar.svg";
 import incomeImg from "../../assets/entradas.svg";
 import outcomeImg from "../../assets/saídas.svg";
-import {FormEvent, useContext, useState} from "react";
-import { TransactionsContext } from "../../TransactionsContext";
+import {FormEvent, useState} from "react";
+import { useTransactions } from "../../hooks/UseTransactionsContext";
+
 
 interface NewTransactionModalProps{
     isOpen: boolean;
@@ -18,16 +19,22 @@ export function NewTransactionModal({ isOpen,  onRequestClose}: NewTransactionMo
     const [value, setValue] = useState(0);
     const [category, setCategory] = useState('');
 
-    const { createTransaction } = useContext(TransactionsContext);
+    const { createTransaction } = useTransactions();
     
-    function handleCreateNewTransaction(event: FormEvent){
+    async function handleCreateNewTransaction(event: FormEvent){
         event.preventDefault();//faz com que a página não seja recarregada ao submeter o formulário
-        createTransaction({
+        await createTransaction({
             name,
             value,
             category,
             type,
-        })
+        });
+
+        setType('');
+        setName('');
+        setValue(0);
+        setCategory('');
+        onRequestClose();
     }
   
     return (
@@ -48,8 +55,8 @@ export function NewTransactionModal({ isOpen,  onRequestClose}: NewTransactionMo
                 <TransactionTypeContainer>
                     <RadioBox type="button" 
                         onClick={() => {setType('deposit')}} 
-                        isActive={type === 'deposit'}
-                        activeColor="green"
+                        isactive={type === 'deposit' ? true : false}
+                        activecolor="green"
                     >
                         <img src={incomeImg} alt="Entrada" />
                         <span>Entrada</span>
@@ -57,8 +64,8 @@ export function NewTransactionModal({ isOpen,  onRequestClose}: NewTransactionMo
 
                     <RadioBox type="button" 
                         onClick={() => {setType('withdraw')}} 
-                        isActive={type === 'withdraw'}
-                        activeColor="red"
+                        isactive={type === 'withdraw' ? true : false}
+                        activecolor="red"
                     >
                         <img src={outcomeImg} alt="Saída" />
                         <span>Saída</span>
